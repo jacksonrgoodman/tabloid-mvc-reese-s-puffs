@@ -37,6 +37,76 @@ namespace TabloidMVC.Repositories
                 }
             }
         }
+        public Tag GetTagById(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                       SELECT t.Id,
+                              t.Name
+                         FROM Tag t
+                        WHERE t.id = @id";
+
+                    cmd.Parameters.AddWithValue("@id", id);
+                    
+                    var reader = cmd.ExecuteReader();
+
+                    Tag tag = null;
+
+                    if (reader.Read())
+                    {
+                        tag = NewTagFromReader(reader);
+                    }
+
+                    reader.Close();
+
+                    return tag;
+                }
+            }
+        }
+        public void AddTag(Tag tag)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                    INSERT INTO Tag ([Name])
+                    OUTPUT INSERTED.ID
+                    VALUES (@name);
+                ";
+
+                    cmd.Parameters.AddWithValue("@name", tag.Name);
+
+                    int id = (int)cmd.ExecuteScalar();
+
+                    tag.Id = id;
+                }
+            }
+        }
+        public void DeleteTag(int tagId)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                            DELETE FROM Tag
+                            WHERE Id = @id
+                        ";
+
+                    cmd.Parameters.AddWithValue("@id", tagId);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
 
         private Tag NewTagFromReader(SqlDataReader reader)
         {

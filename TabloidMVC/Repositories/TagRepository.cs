@@ -12,7 +12,7 @@ namespace TabloidMVC.Repositories
     public class TagRepository : BaseRepository, ITagRepository
     {
         public TagRepository(IConfiguration config) : base(config) { }
-        public List<Post> GetAllTags()
+        public List<Tag> GetAllTags()
         {
             using (var conn = Connection)
             {
@@ -21,26 +21,30 @@ namespace TabloidMVC.Repositories
                 {
                     cmd.CommandText = @"
                        SELECT t.Id,
-                              t.
+                              t.Name
                          FROM Tag t
-                              LEFT JOIN Category c ON p.CategoryId = c.id
-                              LEFT JOIN UserProfile u ON p.UserProfileId = u.id
-                              LEFT JOIN UserType ut ON u.UserTypeId = ut.id
-                        WHERE IsApproved = 1 AND PublishDateTime < SYSDATETIME()";
+                              ";
                     var reader = cmd.ExecuteReader();
 
-                    var posts = new List<Post>();
-
+                    var tags = new List<Tag>();
                     while (reader.Read())
                     {
-                        posts.Add(NewPostFromReader(reader));
+                        tags.Add(NewTagFromReader(reader));
                     }
-
                     reader.Close();
 
-                    return posts;
+                    return tags;
                 }
             }
+        }
+
+        private Tag NewTagFromReader(SqlDataReader reader)
+        {
+            return new Tag()
+            {
+                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                Name = reader.GetString(reader.GetOrdinal("Name"))
+            };
         }
     }
 }

@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TabloidMVC.Models;
 
 namespace TabloidMVC.Repositories
 {
-    public class ITagRepository
+    public interface ITagRepository
     {
-        List<Post> GetAllTags();
+        List<Tag> GetAllTags();
     }
 }

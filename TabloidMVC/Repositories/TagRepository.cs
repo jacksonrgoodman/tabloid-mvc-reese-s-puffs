@@ -23,7 +23,7 @@ namespace TabloidMVC.Repositories
                        SELECT t.Id,
                               t.Name
                          FROM Tag t
-                              ";
+                              ORDER BY Name ASC";
                     var reader = cmd.ExecuteReader();
 
                     var tags = new List<Tag>();

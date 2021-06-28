@@ -106,7 +106,24 @@ namespace TabloidMVC.Repositories
                 }
             }
         }
+        public UserProfile GetUsersById(int id)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                                    SELECT u.id, u.FirstName, u.LastName, u.DisplayName, u.Email,
+                                        u.CreateDateTime, u.ImageLocation, u.UserTypeId,
+                                        ut.[Name] AS UserTypeName
+                                    FROM UserProfile u
+                                    LEFT JOIN UserType ut ON u.UserTypeId = ut.id
+                                    WHERE Id = @id";
 
-       
-    }
+                    cmd.Parameters.AddWithValue("@id, id");
+
+                }
+
+            }
 }

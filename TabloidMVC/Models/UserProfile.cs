@@ -37,5 +37,9 @@ namespace TabloidMVC.Models
                 return $"{FirstName} {LastName}";
             }
         }
+        public string DateString()
+        {
+            return CreateDateTime.ToShortDateString();
+        }
     }
 }

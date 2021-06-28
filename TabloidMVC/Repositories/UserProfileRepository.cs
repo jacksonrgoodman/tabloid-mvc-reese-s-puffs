@@ -12,9 +12,9 @@ namespace TabloidMVC.Repositories
         public UserProfileRepository(IConfiguration config) : base(config)
         {
             _config = config;
-                }
+        }
 
-       
+
 
         public UserProfile GetByEmail(string email)
         {
@@ -119,11 +119,44 @@ namespace TabloidMVC.Repositories
                                         ut.[Name] AS UserTypeName
                                     FROM UserProfile u
                                     LEFT JOIN UserType ut ON u.UserTypeId = ut.id
-                                    WHERE Id = @id";
+                                    WHERE u.Id = @id";
 
-                    cmd.Parameters.AddWithValue("@id, id");
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        UserProfile userProfile = new UserProfile()
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            Email = reader.GetString(reader.GetOrdinal("Email")),
+                            FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
+                            LastName = reader.GetString(reader.GetOrdinal("LastName")),
+                            DisplayName = reader.GetString(reader.GetOrdinal("DisplayName")),
+                            CreateDateTime = reader.GetDateTime(reader.GetOrdinal("CreateDateTime")),
+                            ImageLocation = DbUtils.GetNullableString(reader, "ImageLocation"),
+                            UserTypeId = reader.GetInt32(reader.GetOrdinal("UserTypeId")),
+                            UserType = new UserType()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("UserTypeId")),
+                                Name = reader.GetString(reader.GetOrdinal("UserTypeName"))
+                            },
+                        };
+
+                        reader.Close();
+                        return userProfile;
+                    }
+
+                    else
+                    {
+                        reader.Close();
+                        return null;
+                    }
 
                 }
 
             }
+        }
+    }
 }

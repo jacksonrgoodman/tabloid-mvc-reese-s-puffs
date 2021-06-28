@@ -12,6 +12,12 @@ namespace TabloidMVC.Models
         public int UserProfileId { get; set; }
         public string Subject { get; set; }
         public string Content { get; set; }
+
+        
         public DateTime CreateDateTime { get; set; }
+        public UserProfile UserProfile { get; set; }
+        public Post Post { get; set; }
+
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.SqlClient.Server;
 using System;
+using System.ComponentModel;
 using System.Runtime.Intrinsics.X86;
 
 namespace TabloidMVC.Models
@@ -9,6 +10,7 @@ namespace TabloidMVC.Models
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        [DisplayName("Author Name")]
         public string DisplayName { get; set; }
         public string Email { get; set; }
         public DateTime CreateDateTime { get; set; }

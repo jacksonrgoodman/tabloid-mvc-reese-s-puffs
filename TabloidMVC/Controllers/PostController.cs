@@ -74,6 +74,15 @@ namespace TabloidMVC.Controllers
                 return View(vm);
             }
         }
+        // GET: Owners/Delete/5
+        public ActionResult Delete(int id)
+        {
+            Post post = _postRepository.;
+
+            return View(owner);
+        }
+
+
 
         private int GetCurrentUserProfileId()
         {

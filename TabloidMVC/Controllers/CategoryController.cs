@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using TabloidMVC.Models;
 using TabloidMVC.Repositories;
 
@@ -50,11 +48,11 @@ namespace TabloidMVC.Controllers
             try
             {
                 _categoryRepo.CreateCategory(category);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index");
             }
-            catch
+            catch(Exception ex)
             {
-                return View();
+                return View(category);
             }
         }
     }

@@ -1,10 +1,10 @@
-﻿@model IEnumerable<TabloidMVC.Models.Comments>
+﻿@model TabloidMVC.Models.ViewModels.CommentViewModel
 
 @{
     ViewData["Title"] = "Index";
 }
 
-
+<h1>Comments</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -13,33 +13,34 @@
 
 <table class="table">
     <thead>
-        <tr>
-            <h1>@Html.DisplayNameFor(model => model.PostId)</h1>
-        </tr>
+    <th>
+        <label class="font-weight-bold">Post:</label>
+        <span>@Model.Post.Title</span>
+    </th>
         <tr>
             @*<th>
-                    @Html.DisplayNameFor(model => model.Id)
-                </th>*@
+                @Html.DisplayNameFor(model => model.Id)
+            </th>*@
             @*<th>
-                    @Html.DisplayNameFor(model => model.PostId)
-                </th>*@
+                @Html.DisplayNameFor(model => model.PostId)
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.UserProfile.DisplayName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Subject)
+                @Html.DisplayNameFor(model => model.Comment.Subject)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Content)
+                @Html.DisplayNameFor(model => model.Comment.Content)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CreateDateTime)
+                @Html.DisplayNameFor(model => model.Comment.CreateDateTime)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.Comments)
         {
             <tr>
                 @*<td>

@@ -68,6 +68,28 @@ namespace TabloidMVC.Repositories
                 }
             }
         }
+        public void AddTagToPost(Tag tag, Post post)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                    INSERT INTO PostTag (PostId, TagId)
+                    OUTPUT INSERTED.ID
+                    VALUES (@postid, @tagid);
+                ";
+
+                    cmd.Parameters.AddWithValue("@postid", post.Id);
+                    cmd.Parameters.AddWithValue("@tagid", tag.Id);
+
+                    int id = (int)cmd.ExecuteScalar();
+
+                    tag.Id = id;
+                }
+            }
+        }
         public void AddTag(Tag tag)
         {
             using (SqlConnection conn = Connection)
@@ -89,6 +111,7 @@ namespace TabloidMVC.Repositories
                 }
             }
         }
+
         public void UpdateTag(Tag tag)
         {
             using (SqlConnection conn = Connection)

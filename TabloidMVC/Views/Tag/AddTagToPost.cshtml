@@ -1,0 +1,42 @@
+﻿@model IEnumerable<TabloidMVC.Models.Tag>
+
+@{
+    ViewData["Title"] = "AddTagToPost";
+}
+
+<h1>AddTagToPost</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <!-- @Html.DisplayNameFor(model => model.Name) -->
+                Tag
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.ActionLink("AddTag", "AddTag", new { /* id=item.PrimaryKey */ }) |
+                <div class="form-group">
+                    <input type="submit" value="ADD"  onClick="@AddTagToPost()" class="btn btn-primary btn-block" />
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="REMOVE" class="btn btn-primary btn-block" />
+                </div>
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

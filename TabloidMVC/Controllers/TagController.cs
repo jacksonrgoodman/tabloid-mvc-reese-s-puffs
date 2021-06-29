@@ -22,6 +22,28 @@ namespace TabloidMVC.Controllers
             var tags = _tagRepository.GetAllTags();
             return View(tags);
         }
+        //TODO GET: Tags/AddTagToPost
+        public IActionResult AddTagToPost()
+        {
+            var tags = _tagRepository.GetAllTags();
+            return View(tags);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddTagToPost(Tag tag, Post post)
+        {
+            var tags = _tagRepository.GetAllTags();
+            try
+            {
+                _tagRepository.AddTagToPost(tag, post);
+                return RedirectToAction("Index");
+            }
+
+            catch (Exception ex)
+            {
+                return View(tags);
+            }
+        }
         //TODO GET: Tags/Create
         public IActionResult Create()
         {

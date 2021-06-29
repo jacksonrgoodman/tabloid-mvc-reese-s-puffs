@@ -54,6 +54,26 @@ namespace TabloidMVC.Repositories
                 }
             }
         }
+
+        public void DeleteComment(int commentId)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                            DELETE FROM Owner
+                            WHERE Id = @id
+                        ";
+
+                    cmd.Parameters.AddWithValue("@id", commentId);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
     }
 
     //public void Add(Comments comment)

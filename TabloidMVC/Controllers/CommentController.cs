@@ -42,5 +42,30 @@ namespace TabloidMVC.Controllers
             var comments = _commentRepository.GetCommentsByPostId(id);
             return View(comments);
         }
+
+        public ActionResult Delete(int id)
+        {
+            Comments comment = _commentRepository.DeleteComment(CommentId);
+
+            return View(owner);
+        }
+
+        // POST: owners /Delete/5
+        // POST: Owners/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id, Owner owner)
+        {
+            try
+            {
+                _ownerRepository.DeleteOwner(id);
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return View(owner);
+            }
+        }
     }
 }

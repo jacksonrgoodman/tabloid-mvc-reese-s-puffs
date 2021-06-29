@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using TabloidMVC.Models;
 using TabloidMVC.Models.ViewModels;
@@ -34,6 +36,7 @@ namespace TabloidMVC.Controllers
                 Comments = comments,
                
             };
+            
             return View(vm);
         }
 
@@ -41,6 +44,39 @@ namespace TabloidMVC.Controllers
         {
             var comments = _commentRepository.GetCommentsByPostId(id);
             return View(comments);
+        }
+
+        public IActionResult Create(int id)
+        {
+            var vm = new CommentViewModel();
+            vm.Post = new Post();
+            vm.Post.Id = id;
+            vm.Comments = _commentRepository.GetCommentsByPostId(id);
+            return View(vm);
+        }
+
+        [HttpPost]
+        public IActionResult Create(CommentViewModel vm)
+        {
+            try
+            {
+                vm.Comment.CreateDateTime = DateAndTime.Now;
+
+                vm.Comment.UserProfileId = GetCurrentUserProfileId();
+                vm.Comment.PostId = vm.Post.Id;
+                _commentRepository.AddComment(vm.Comment);
+                return RedirectToAction("Index", new { id = vm.Post.Id });
+            }
+            catch (Exception ex)
+            {
+               
+                return View(vm);
+            }
+        }
+        private int GetCurrentUserProfileId()
+        {
+            string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return int.Parse(id);
         }
     }
 }

@@ -6,12 +6,12 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+@*<p>
+        <a asp-action="Create">Create New</a>
+    </p>*@
 <p>
     <a asp-action="DeactivateUsers">View Deactivated</a>
-    
+
 </p>
 
 <table class="table">
@@ -24,9 +24,11 @@
             <th>
                 @Html.DisplayNameFor(model => model.DisplayName)
             </th>
-
             <th>
-                @Html.DisplayNameFor(model => model.UserType.Name)
+               Active
+            </th>
+            <th>
+                User Type
             </th>
 
             <th></th>
@@ -34,7 +36,37 @@
     </thead>
     <tbody>
         @foreach (var item in Model)
+
         {
+            @if (item.Active == 1)
+            {
+
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DisplayName)
+                    </td>
+                    <td>
+                        Active 
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserType.Name)
+                    </td>
+
+
+                    <td>
+                        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                        @Html.ActionLink("Deactivate", "Deactivate", new { id = item.Id })
+                    </td>
+
+                </tr>
+            }
+        else
+        {
+
+       
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.FullName)
@@ -42,21 +74,18 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.DisplayName)
                 </td>
+                <td>
+                    Deactivated
+                </td>
 
                 <td>
                     @Html.DisplayFor(modelItem => item.UserType.Name)
                 </td>
-
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
                     @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                    @*@Html.ActionLink("Deactivate", "Deactivate", new { id = item.Id })*@
-
-                    
-
-
                 </td>
             </tr>
+        }
         }
     </tbody>
 </table>

@@ -27,7 +27,10 @@ namespace TabloidMVC.Controllers
         public ActionResult DeactivateUsers()
         {
             List<UserProfile> deactivated = _userRepo.GetDeactivated();
+           
             return View(deactivated);
+
+
         }
 
         // GET: UserProfile/Details/5

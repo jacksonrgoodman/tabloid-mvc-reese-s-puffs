@@ -7,7 +7,7 @@
 <h1>Comments</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" asp-route-id="@Model.Post.Id">Create New</a>
 </p>
 
 
@@ -67,7 +67,7 @@
         }
     </tbody>
     <a asp-controller="Post"  class="btn btn-outline-primary mx-1" title="View posts">
-        <i class="fas divider-custom-icon"></i>
+        <i class="fas "></i>
     </a>
     <div>
         <label class="font-weight-bold">Post:</label>

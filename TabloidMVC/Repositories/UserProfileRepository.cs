@@ -110,7 +110,7 @@ namespace TabloidMVC.Repositories
             }
         }
 
-       public List<UserProfile> GetDeactivated()
+        public List<UserProfile> GetDeactivated()
         {
             using (SqlConnection conn = Connection)
             {
@@ -157,7 +157,7 @@ namespace TabloidMVC.Repositories
                 }
             }
         }
-    
+
         public UserProfile GetUsersById(int id)
         {
             using (SqlConnection conn = Connection)
@@ -256,7 +256,32 @@ namespace TabloidMVC.Repositories
             }
         }
 
+        public void Register(UserProfile user)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        INSERT INTO UserProfile (FirstName, LastName, DisplayName, Email, ImageLocation)
+                        OUTPUT INSERTED.ID
+                        VALUES(@firstName, @lastName, @displayName, @email, @imageLocation) ";
+
+                    cmd.Parameters.AddWithValue("@firstName", user.FirstName);
+                    cmd.Parameters.AddWithValue("@lastName", user.LastName);
+                    cmd.Parameters.AddWithValue("@displayName", user.DisplayName);
+                    cmd.Parameters.AddWithValue("@email", user.Email);
+                    cmd.Parameters.AddWithValue("@imageLocation", user.ImageLocation);
+
+                    int id = (int)cmd.ExecuteScalar();
+
+                    user.Id = id;
+                }
+            }
+        }
 
 
     }
 }
+

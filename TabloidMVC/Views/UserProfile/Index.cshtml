@@ -42,13 +42,15 @@
             </td>
 
             <td>
-                @Html.ActionLink("Edit", "Edit", new {  id=item.Id }) |
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
                 @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @if (item.Active == 0)
-                {
                 @Html.ActionLink("Deactivate", "Deactivate", new { id = item.Id })
-                }
-                
+
+                @*@if (item.Active == 0)
+        {
+        @Html.ActionLink("Deactivate", "Deactivate", new { id = item.Id })
+        }*@
+
             </td>
         </tr>
 }

@@ -25,7 +25,7 @@ namespace TabloidMVC.Repositories
                 {
                     cmd.CommandText = @"
                        SELECT u.id, u.FirstName, u.LastName, u.DisplayName, u.Email,
-                              u.CreateDateTime, u.ImageLocation, u.UserTypeId, u.Active
+                              u.CreateDateTime, u.ImageLocation, u.UserTypeId, u.Active,
                               ut.[Name] AS UserTypeName
                          FROM UserProfile u
                               LEFT JOIN UserType ut ON u.UserTypeId = ut.id
@@ -72,7 +72,7 @@ namespace TabloidMVC.Repositories
                 {
                     cmd.CommandText = @"
                             SELECT u.id, u.FirstName, u.LastName, u.DisplayName, u.Email,
-                              u.CreateDateTime, u.ImageLocation, u.UserTypeId,
+                              u.CreateDateTime, u.ImageLocation, u.UserTypeId, u.Active,
                               ut.[Name] AS UserTypeName
                               FROM UserProfile u
                             LEFT JOIN UserType ut ON u.UserTypeId = ut.id
@@ -116,7 +116,7 @@ namespace TabloidMVC.Repositories
                 {
                     cmd.CommandText = @"
                                     SELECT u.id, u.FirstName, u.LastName, u.DisplayName, u.Email,
-                                        u.CreateDateTime, u.ImageLocation, u.UserTypeId,
+                                        u.CreateDateTime, u.ImageLocation, u.UserTypeId, u.Active,
                                         ut.[Name] AS UserTypeName
                                     FROM UserProfile u
                                     LEFT JOIN UserType ut ON u.UserTypeId = ut.id
@@ -198,6 +198,8 @@ namespace TabloidMVC.Repositories
 
 
                     cmd.Parameters.AddWithValue("active", user.Active);
+                    cmd.Parameters.AddWithValue("@id", user.Id);
+
                     cmd.ExecuteNonQuery();
                 }
             }

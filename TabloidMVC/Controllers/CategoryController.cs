@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using TabloidMVC.Models;
 using TabloidMVC.Repositories;
 
@@ -36,5 +34,26 @@ namespace TabloidMVC.Controllers
 
         //    return View(category);
         //}
+
+        // GET: CategoryController/Create
+        public ActionResult Create()
+        {
+            return View();
+        }
+        // POST: CategoryController/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(Category category)
+        {
+            try
+            {
+                _categoryRepo.CreateCategory(category);
+                return RedirectToAction("Index");
+            }
+            catch(Exception ex)
+            {
+                return View(category);
+            }
+        }
     }
 }

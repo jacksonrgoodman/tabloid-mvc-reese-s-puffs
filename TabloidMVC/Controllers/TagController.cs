@@ -43,6 +43,34 @@ namespace TabloidMVC.Controllers
                 return View(tag);
             }
         }
+        //TODO GET: Tags/Edit/*EXAMPLE ID*
+        public ActionResult Edit(int id)
+        {
+            Tag tag = _tagRepository.GetTagById(id);
+
+            if (tag == null)
+            {
+                return NotFound();
+            }
+
+            return View(tag);
+        }
+        //TODO POST: Tags/Edit/*EXAMPLE ID*
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(int id, Tag tag)
+        {
+            try
+            {
+                _tagRepository.UpdateTag(tag);
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return View(tag);
+            }
+        }
         // GET: Tags/Delete/EXAMPLE ID
         public ActionResult Delete(int id)
         {

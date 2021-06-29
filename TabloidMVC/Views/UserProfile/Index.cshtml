@@ -9,17 +9,22 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+<p>
+    <a asp-action="DeactivateUsers">Deactivated Users</a>
+    
+</p>
+
 <table class="table">
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.FullName)
             </th>
-         
+
             <th>
                 @Html.DisplayNameFor(model => model.DisplayName)
             </th>
-           
+
             <th>
                 @Html.DisplayNameFor(model => model.UserType.Name)
             </th>
@@ -28,31 +33,30 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DisplayName)
-            </td>
-
-            <td>
-                @Html.DisplayFor(modelItem => item.UserType.Name)
-            </td>
-
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Deactivate", "Deactivate", new { id = item.Id })
-
-                @*@if (item.Active == 0)
+        @foreach (var item in Model)
         {
-        @Html.ActionLink("Deactivate", "Deactivate", new { id = item.Id })
-        }*@
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DisplayName)
+                </td>
 
-            </td>
-        </tr>
-}
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserType.Name)
+                </td>
+
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                    @*@Html.ActionLink("Deactivate", "Deactivate", new { id = item.Id })*@
+
+                    
+
+
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

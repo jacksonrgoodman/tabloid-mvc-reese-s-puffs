@@ -1,0 +1,62 @@
+﻿@model IEnumerable<TabloidMVC.Models.UserProfile>
+
+@{
+    ViewData["Title"] = "DeactivateUsers";
+
+    ViewData["Title"] = "Reactivate";
+
+}
+
+<h1>DeactivateUsers</h1>
+
+@*<p>
+        <a asp-action="Create">Create New</a>
+    </p>*@
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FullName)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.DisplayName)
+            </th>
+           
+            <th>
+                User Type
+            </th>
+           
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+               
+                <td>
+                    @Html.DisplayFor(modelItem => item.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DisplayName)
+                </td>
+              
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserType.Name)
+                </td>
+               
+                   <td>
+                    @Html.ActionLink("Reactivate", "Reactivate", new { id = item.Id }) 
+                </td>
+                
+
+            </tr>
+        }
+    </tbody>
+</table>

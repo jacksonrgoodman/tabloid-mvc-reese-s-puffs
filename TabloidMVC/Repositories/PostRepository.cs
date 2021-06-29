@@ -225,10 +225,10 @@ namespace TabloidMVC.Repositories
 
         public void UpdatePost(Post post)
         {
-            using (var conn = Connection)
+            using (SqlConnection conn = Connection)
             {
                 conn.Open();
-                using (var cmd = conn.CreateCommand())
+                using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
                         UPDATE Post 
@@ -243,14 +243,14 @@ namespace TabloidMVC.Repositories
                                 UserProfileId = @userProfileId
                                 WHERE ID = @id";
                         
-                    cmd.Parameters.AddWithValue("@Title", post.Title);
-                    cmd.Parameters.AddWithValue("@Content", post.Content);
-                    cmd.Parameters.AddWithValue("@ImageLocation", DbUtils.ValueOrDBNull(post.ImageLocation));
-                    cmd.Parameters.AddWithValue("@CreateDateTime", post.CreateDateTime);
-                    cmd.Parameters.AddWithValue("@PublishDateTime", DbUtils.ValueOrDBNull(post.PublishDateTime));
-                    cmd.Parameters.AddWithValue("@IsApproved", post.IsApproved);
-                    cmd.Parameters.AddWithValue("@CategoryId", post.CategoryId);
-                    cmd.Parameters.AddWithValue("@UserProfileId", post.UserProfileId);
+                    cmd.Parameters.AddWithValue("@title", post.Title);
+                    cmd.Parameters.AddWithValue("@content", post.Content);
+                    cmd.Parameters.AddWithValue("@imageLocation", DbUtils.ValueOrDBNull(post.ImageLocation));
+                    cmd.Parameters.AddWithValue("@createDateTime", post.CreateDateTime);
+                    cmd.Parameters.AddWithValue("@publishDateTime", DbUtils.ValueOrDBNull(post.PublishDateTime));
+                    cmd.Parameters.AddWithValue("@isApproved", post.IsApproved);
+                    cmd.Parameters.AddWithValue("@categoryId", post.CategoryId);
+                    cmd.Parameters.AddWithValue("@userProfileId", post.UserProfileId);
 
                     cmd.ExecuteNonQuery();
                 }

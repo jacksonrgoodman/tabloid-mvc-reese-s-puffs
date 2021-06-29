@@ -102,6 +102,35 @@ namespace TabloidMVC.Controllers
             }
         }
 
+        // GET: Post/Edit/EXAMPLE ID
+        public ActionResult Edit(int id)
+        {
+            Post post = _postRepository.GetPostById(id);
+            if (post == null)
+            {
+                return NotFound();
+            }
+
+            return View(post);
+        }
+
+        // POST: Post/Edit/EXAMPLE ID
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(int id, Post post)
+        {
+            try
+            {
+                _postRepository.UpdatePost(post);
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return View(post);
+            }
+        }
+
 
 
         private int GetCurrentUserProfileId()

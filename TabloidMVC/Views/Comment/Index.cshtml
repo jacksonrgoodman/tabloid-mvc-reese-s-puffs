@@ -13,11 +13,8 @@
 
 <table class="table">
     <thead>
-    <th>
-        <label class="font-weight-bold">Post:</label>
-        <span>@Model.Post.Title</span>
-    </th>
         <tr>
+        
             @*<th>
                 @Html.DisplayNameFor(model => model.Id)
             </th>*@
@@ -69,8 +66,11 @@
             </tr>
         }
     </tbody>
-
     <a asp-controller="Post"  class="btn btn-outline-primary mx-1" title="View posts">
         <i class="fas divider-custom-icon"></i>
     </a>
+    <div>
+        <label class="font-weight-bold">Post:</label>
+        <span>@Model.Post.Title</span>
+    </div>
 </table>

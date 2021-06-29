@@ -51,11 +51,11 @@ namespace TabloidMVC.Repositories
                         
                     reader.Close();
                     return comments;
-                }
+                }   
             }
         }
 
-        public void DeleteComment(int commentId)
+        public void DeleteComment(int id)
         {
             using (SqlConnection conn = Connection)
             {
@@ -64,11 +64,11 @@ namespace TabloidMVC.Repositories
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                            DELETE FROM Owner
+                            DELETE FROM Comment
                             WHERE Id = @id
                         ";
 
-                    cmd.Parameters.AddWithValue("@id", commentId);
+                    cmd.Parameters.AddWithValue("@id", id);
 
                     cmd.ExecuteNonQuery();
                 }

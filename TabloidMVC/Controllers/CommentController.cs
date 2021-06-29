@@ -81,26 +81,28 @@ namespace TabloidMVC.Controllers
 
         public ActionResult Delete(int id)
         {
-            Comments comment = _commentRepository.DeleteComment(CommentId);
-
-            return View(owner);
+            var vm = new CommentViewModel();
+            vm.Post = new Post();
+            vm.Post.Id = id;
+            vm.Comments = _commentRepository.GetCommentsByPostId(id);
+            return View(vm);
         }
 
-        // POST: owners /Delete/5
-        // POST: Owners/Delete/5
+       
+        // POST: Comment/Delete
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, Owner owner)
+        public ActionResult Delete(int id, Comments comment)
         {
             try
             {
-                _ownerRepository.DeleteOwner(id);
+                _commentRepository.DeleteComment(id);
 
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
-                return View(owner);
+                return View(comment);
             }
         }
     }

@@ -24,12 +24,18 @@ namespace TabloidMVC.Models
         [DisplayName("Date")]
         public DateTime CreateDateTime { get; set; }
 
-
+        [DisplayName("Image")]
         public string ImageLocation { get; set; }
+
+        [DisplayName("User Type")]
         public int UserTypeId { get; set; }
+
+        public int Active { get; set; }
 
         [DisplayName("User Type")]
         public UserType UserType { get; set; }
+
+        [DisplayName("Name")]
         public string FullName
         {
             get

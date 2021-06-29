@@ -58,44 +58,78 @@ namespace TabloidMVC.Controllers
         }
 
         // GET: UserProfile/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Reactivate(int id)
         {
-            return View();
+            UserProfile user = _userRepo.GetUsersById(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
         }
 
         // POST: UserProfile/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Reactivate(int id, UserProfile user)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                _userRepo.ReactivateUser(user);
+                return RedirectToAction("Index");
             }
-            catch
+            catch(Exception)
             {
-                return View();
+                return View(user);
+            }
+        }
+
+        public ActionResult Deactivate(int id)
+        {
+            UserProfile user = _userRepo.GetUsersById(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
+        }
+
+        // POST: UserProfile/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Deactivate(int id, UserProfile user)
+        {
+            try
+            {
+                _userRepo.DeactivateUser(user);
+                return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
+                return View(user);
             }
         }
 
         // GET: UserProfile/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+                return View();
+                    
         }
 
         // POST: UserProfile/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(int id,UserProfile user)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+               
+                return RedirectToAction("Index");
             }
-            catch
+            catch(Exception ex)
             {
-                return View();
+                return View(user);
             }
         }
     }

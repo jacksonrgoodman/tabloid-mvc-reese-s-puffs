@@ -93,6 +93,51 @@ namespace TabloidMVC.Repositories
             }
         }
 
+        public Comments GetCommentById(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"Select c.Id, c.PostId, up.DisplayName as AuthorName, c.Subject, c.Content,
+                    c.CreateDateTime as Date, p.Title as Title  
+                    from Comment c
+                    left Join Post p on c.PostId = p.Id
+                    left join UserProfile up on c.UserProfileId = up.Id
+                    where p.id = @id
+                    order by c.CreateDateTime desc;";
+
+                    cmd.Parameters.AddWithValue("@id", id);
+                    
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        Comments comment = new Comments()
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            PostId = reader.GetInt32(reader.GetOrdinal("PostId")),
+
+                            Subject = reader.GetString(reader.GetOrdinal("Subject")),
+                            Content = reader.GetString(reader.GetOrdinal("Content")),
+                            CreateDateTime = reader.GetDateTime(reader.GetOrdinal("Date")),
+                            UserProfile = new UserProfile
+                            {
+                                DisplayName = reader.GetString(reader.GetOrdinal("AuthorName"))
+                            }
+                        };
+                    reader.Close();
+                    return comment;
+                    }
+                    reader.Close();
+                    return null;
+
+                }
+            }
+        }
+
 
 
         //public List<Comments> GetAll()

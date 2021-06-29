@@ -81,11 +81,9 @@ namespace TabloidMVC.Controllers
 
         public ActionResult Delete(int id)
         {
-            var vm = new CommentViewModel();
-            vm.Post = new Post();
-            vm.Post.Id = id;
-            vm.Comments = _commentRepository.GetCommentsByPostId(id);
-            return View(vm);
+            Comments comment = _commentRepository.GetCommentById(id);
+
+            return View(comment);
         }
 
        

@@ -115,6 +115,7 @@ namespace TabloidMVC.Repositories
                         WHERE p.id = @id AND p.UserProfileId = @userProfileId";
 
                     cmd.Parameters.AddWithValue("@userProfileId", userProfileId);
+                    cmd.Parameters.AddWithValue("@id", id);
                     var reader = cmd.ExecuteReader();
 
                     Post post = null;

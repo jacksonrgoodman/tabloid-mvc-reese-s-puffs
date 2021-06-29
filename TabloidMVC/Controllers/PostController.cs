@@ -5,6 +5,8 @@ using Microsoft.VisualBasic;
 using System.Security.Claims;
 using TabloidMVC.Models.ViewModels;
 using TabloidMVC.Repositories;
+using TabloidMVC.Models;
+using System;
 
 namespace TabloidMVC.Controllers
 {
@@ -22,6 +24,7 @@ namespace TabloidMVC.Controllers
 
         public IActionResult Index()
         {
+            int currentUser = GetCurrentUserProfileId();
             var posts = _postRepository.GetAllPublishedPosts();
             return View(posts);
         }
@@ -74,12 +77,29 @@ namespace TabloidMVC.Controllers
                 return View(vm);
             }
         }
-        // GET: Owners/Delete/5
+        // GET: Post/Delete/EXAMPLE ID
         public ActionResult Delete(int id)
         {
-            Post post = _postRepository.;
+            Models.Post post = _postRepository.GetPostById(id);
 
-            return View(owner);
+            return View(post);
+        }
+
+        // POST: Post/Delete/EXAMPLE ID
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id, Post post)
+        {
+            try
+            {
+                _postRepository.DeletePost(id);
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return View(post);
+            }
         }
 
 

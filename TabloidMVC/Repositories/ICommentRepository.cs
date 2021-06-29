@@ -6,11 +6,10 @@ using TabloidMVC.Models;
 
 namespace TabloidMVC.Repositories
 {
-    public interface ITagRepository
+    public interface ICommentRepository
     {
-        List<Tag> GetAllTags();
-        Tag GetTagById(int id);
-        void AddTag(Tag tag);
-        void DeleteTag(int tagId);
+       
+        List<Comments> GetCommentsByPostId(int id);
+        
     }
 }

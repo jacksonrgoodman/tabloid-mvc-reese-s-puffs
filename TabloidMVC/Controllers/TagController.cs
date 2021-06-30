@@ -38,14 +38,14 @@ namespace TabloidMVC.Controllers
         {
             try
             {
-                vm.TagId = vm.Tags.Id;
-                _tagRepository.AddTagToPost(vm.Tags.Id, vm.Post.Id);
+                //vm.TagId = vm.Tag.Id;
+                //_tagRepository.AddTagToPost(vm.Tag.Id, vm.Post.Id);
                 return RedirectToAction("Index");
             }
 
             catch (Exception ex)
             {
-                return View(tags);
+                return View();
             }
         }
         //TODO GET: Tags/Create

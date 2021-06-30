@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using TabloidMVC.Models;
 using TabloidMVC.Utils;
@@ -273,7 +274,16 @@ namespace TabloidMVC.Repositories
                     cmd.Parameters.AddWithValue("@lastName", user.LastName);
                     cmd.Parameters.AddWithValue("@displayName", user.DisplayName);
                     cmd.Parameters.AddWithValue("@email", user.Email);
-                    cmd.Parameters.AddWithValue("@imageLocation", user.ImageLocation);
+                    if(user.ImageLocation != null)
+                    {
+                        cmd.Parameters.AddWithValue("@imageLocation", user.ImageLocation);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@imageLocation", DBNull.Value);
+                    }
+                    
+                    
 
                     int id = (int)cmd.ExecuteScalar();
 
@@ -309,23 +319,24 @@ namespace TabloidMVC.Repositories
         {
             using (SqlConnection conn = Connection)
             {
+                conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                                    SELECT Count(Id)
+                                    SELECT Count(Id) as AdminCounts
                                     FROM UserProfile
                                     WHERE UserTypeId = 1 and Active = 1";
 
                     SqlDataReader reader = cmd.ExecuteReader();
 
 
-                    int adminCount = new int();
+                    int adminCount = 0;
                     while (reader.Read())
                     {
 
 
                         {
-                            adminCount = reader.GetInt32(reader.GetOrdinal("Id"));
+                            adminCount = reader.GetInt32(reader.GetOrdinal("AdminCounts"));
                         }
 
 

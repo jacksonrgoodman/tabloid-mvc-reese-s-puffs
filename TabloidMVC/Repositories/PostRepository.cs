@@ -237,7 +237,7 @@ namespace TabloidMVC.Repositories
                                 Content = @content,
                                 ImageLocation = @imageLocation,
                                 PublishDateTime = @publishDateTime,
-                                CategoryId = @categoryId,
+                                CategoryId = @categoryId
                                 WHERE Id = @id";
 
                     cmd.Parameters.AddWithValue("@title", post.Title);

@@ -88,6 +88,24 @@ namespace TabloidMVC.Repositories
                 }
             }
         }
+        public void RemoveTagFromPost(int tag, int post)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                    DELETE FROM PostTag WHERE PostId = @postid  AND TagId = @tag.id  ;
+                ";
+
+                    cmd.Parameters.AddWithValue("@postid", post);
+                    cmd.Parameters.AddWithValue("@tagid", tag);
+
+                    int id = (int)cmd.ExecuteScalar();
+                }
+            }
+        }
         public void AddTag(Tag tag)
         {
             using (SqlConnection conn = Connection)

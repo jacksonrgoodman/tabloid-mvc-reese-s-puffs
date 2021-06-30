@@ -45,6 +45,19 @@ namespace TabloidMVC.Controllers
                 return View();
             }
         }
+        public ActionResult RemoveTagFromPost(int post, int tag)
+        {
+            try
+            {
+                _tagRepository.RemoveTagFromPost(tag, post);
+                return RedirectToAction("Index");
+            }
+
+            catch (Exception ex)
+            {
+                return View();
+            }
+        }
         //TODO GET: Tags/Create
         public IActionResult Create()
         {

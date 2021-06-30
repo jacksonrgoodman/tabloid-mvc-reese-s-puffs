@@ -60,7 +60,10 @@ namespace TabloidMVC.Controllers
         {
             try
             {
-                vm.Comment.CreateDateTime = DateAndTime.Now;
+                //DateTime date1 = new DateTime();
+                //DateTime dateOnly = date1.Date;
+                //dateOnly.ToString("d");
+                vm.Comment.CreateDateTime = DateTime.Now;
 
                 vm.Comment.UserProfileId = GetCurrentUserProfileId();
                 vm.Comment.PostId = vm.Post.Id;

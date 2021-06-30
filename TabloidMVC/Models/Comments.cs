@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,11 +14,14 @@ namespace TabloidMVC.Models
         public string Subject { get; set; }
         public string Content { get; set; }
 
-        
-        public DateTime CreateDateTime { get; set; }
+        [DisplayName("Date")]
+        public DateTime CreateDateTime { get; set; } 
         public UserProfile UserProfile { get; set; }
         public Post Post { get; set; }
 
-
+        public string DateString()
+        {
+            return CreateDateTime.ToShortDateString();
+        }
     }
 }

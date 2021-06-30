@@ -103,23 +103,16 @@ namespace TabloidMVC.Repositories
                 {
                     cmd.CommandText = @"
                             UPDATE Comment
-                            SET 
-                                Id = @Id,
-                                PostId = @PostId,
-                                UserProfileId = @UserProfileId,
+                            SET
+                                    
                                 Subject = @Subject,
-                                Content = @Content,
-                                CreateDateTime = @CreateDateTime
-
-                        
+                                Content = @Content
                             WHERE Id = @id";
 
                     cmd.Parameters.AddWithValue("@Id", comment.Id);
-                    cmd.Parameters.AddWithValue("@PostId", comment.PostId);
-                    cmd.Parameters.AddWithValue("@UserProfileId", comment.UserProfileId);
                     cmd.Parameters.AddWithValue("@Subject", comment.Subject);
                     cmd.Parameters.AddWithValue("@Content", comment.Content);
-                    cmd.Parameters.AddWithValue("@CreateDateTime", comment.CreateDateTime );
+                    
 
                     cmd.ExecuteNonQuery();
                 }

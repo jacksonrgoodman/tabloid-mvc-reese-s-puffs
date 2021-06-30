@@ -98,7 +98,7 @@ namespace TabloidMVC.Controllers
                 //vm.Comment.UserProfileId = GetCurrentUserProfileId();
                 //vm.Comment.Id = vm.Post.Id;
                 Comments returnedComment = _commentRepository.GetCommentById(comment.Id);
-                _commentRepository.UpdateComment(comment.Id);
+                _commentRepository.DeleteComment(comment.Id);
 
                 return RedirectToAction("Index", new { id = returnedComment.PostId });
             }
@@ -119,12 +119,12 @@ namespace TabloidMVC.Controllers
         // POST: Comment/Delete
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Comments comment)
-        {
+        public ActionResult Edit(Comments comment)  
+            {
             try
             {
-                Comments returnedComment = _commentRepository.GetCommentById(comment.Id);
-                _commentRepository.UpdateComment(comment.Id);
+                //Comments returnedComment = _commentRepository.GetCommentById(comment.Id);
+                _commentRepository.UpdateComment(comment);
 
                 return RedirectToAction("Index", new { id = comment.PostId });
             }

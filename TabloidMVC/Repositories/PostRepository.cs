@@ -225,10 +225,10 @@ namespace TabloidMVC.Repositories
 
         public void UpdatePost(Post post)
         {
-            using (SqlConnection conn = Connection)
+            using (var conn = Connection)
             {
                 conn.Open();
-                using (SqlCommand cmd = conn.CreateCommand())
+                using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
                         UPDATE Post 
@@ -236,21 +236,16 @@ namespace TabloidMVC.Repositories
                                 Title = @title,
                                 Content = @content,
                                 ImageLocation = @imageLocation,
-                                CreateDateTime = @createDateTime,
                                 PublishDateTime = @publishDateTime,
-                                IsApproved = @isApproved,
                                 CategoryId = @categoryId,
-                                UserProfileId = @userProfileId
-                                WHERE ID = @id";
-                        
+                                WHERE Id = @id";
+
                     cmd.Parameters.AddWithValue("@title", post.Title);
                     cmd.Parameters.AddWithValue("@content", post.Content);
                     cmd.Parameters.AddWithValue("@imageLocation", DbUtils.ValueOrDBNull(post.ImageLocation));
-                    cmd.Parameters.AddWithValue("@createDateTime", post.CreateDateTime);
                     cmd.Parameters.AddWithValue("@publishDateTime", DbUtils.ValueOrDBNull(post.PublishDateTime));
-                    cmd.Parameters.AddWithValue("@isApproved", post.IsApproved);
                     cmd.Parameters.AddWithValue("@categoryId", post.CategoryId);
-                    cmd.Parameters.AddWithValue("@userProfileId", post.UserProfileId);
+                    cmd.Parameters.AddWithValue("@id", post.Id);
 
                     cmd.ExecuteNonQuery();
                 }
@@ -296,7 +291,42 @@ namespace TabloidMVC.Repositories
 
         public List<Post> GetAllPostsFromUser(int userProfileId)
         {
-            throw new NotImplementedException();
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                       SELECT p.Id, p.Title, p.Content, 
+                              p.ImageLocation AS HeaderImage,
+                              p.CreateDateTime, p.PublishDateTime, p.IsApproved,
+                              p.CategoryId, p.UserProfileId,
+                              c.[Name] AS CategoryName,
+                              u.FirstName, u.LastName, u.DisplayName, 
+                              u.Email, u.CreateDateTime, u.ImageLocation AS AvatarImage,
+                              u.UserTypeId, 
+                              ut.[Name] AS UserTypeName
+                         FROM Post p
+                              LEFT JOIN Category c ON p.CategoryId = c.id
+                              LEFT JOIN UserProfile u ON p.UserProfileId = u.id
+                              LEFT JOIN UserType ut ON u.UserTypeId = ut.id
+                        WHERE p.UserProfileId = @userProfileId
+                        ORDER BY PublishDateTime";
+                    cmd.Parameters.AddWithValue("@userProfileId", userProfileId);
+                    var reader = cmd.ExecuteReader();
+
+                    var posts = new List<Post>();
+
+                    while (reader.Read())
+                    {
+                        posts.Add(NewPostFromReader(reader));
+                    }
+
+                    reader.Close();
+
+                    return posts;
+                }
+            }
         }
     }
 }

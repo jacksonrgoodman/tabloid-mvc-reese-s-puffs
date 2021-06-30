@@ -119,8 +119,11 @@ namespace TabloidMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, Post post)
         {
+
             try
             {
+                post.Id = id;
+                Post currentPost = _postRepository.GetPostById(id);
                 _postRepository.UpdatePost(post);
 
                 return RedirectToAction("Index");

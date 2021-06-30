@@ -19,7 +19,7 @@ namespace TabloidMVC.Repositories
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"Select up.DisplayName as AuthorName, c.Subject, c.Content,
+                    cmd.CommandText = @"Select c.PostId, c.Id, up.DisplayName as AuthorName, c.Subject, c.Content,
                     c.CreateDateTime as Date, p.Title as Title  
                     from Comment c
                     left Join Post p on c.PostId = p.Id
@@ -34,9 +34,9 @@ namespace TabloidMVC.Repositories
                     {
                         Comments comment = new Comments()
                         {
-                            //Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                            //PostId = reader.GetInt32(reader.GetOrdinal("PostId")),
-                            
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            PostId = reader.GetInt32(reader.GetOrdinal("PostId")),
+
                             Subject = reader.GetString(reader.GetOrdinal("Subject")),
                             Content = reader.GetString(reader.GetOrdinal("Content")),
                             CreateDateTime = reader.GetDateTime(reader.GetOrdinal("Date")),
@@ -105,7 +105,7 @@ namespace TabloidMVC.Repositories
                     from Comment c
                     left Join Post p on c.PostId = p.Id
                     left join UserProfile up on c.UserProfileId = up.Id
-                    where p.id = @id
+                    where c.id = @id
                     order by c.CreateDateTime desc;";
 
                     cmd.Parameters.AddWithValue("@id", id);

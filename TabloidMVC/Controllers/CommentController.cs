@@ -79,33 +79,32 @@ namespace TabloidMVC.Controllers
             return int.Parse(id);
         }
 
+        //Get: comment/delete
         public ActionResult Delete(int id)
         {
-            var vm = new CommentViewModel();
-            vm.Post = new Post();
-            vm.Post.Id = id;
-            vm.Comments = _commentRepository.GetCommentsByPostId(id);
-            return View(vm);
+            Comments comment = _commentRepository.GetCommentById(id);
+            return View(comment);
         }
 
        
         // POST: Comment/Delete
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, CommentViewModel vm)
+        public ActionResult Delete(Comments comment)
         {
             try
             {
 
                 //vm.Comment.UserProfileId = GetCurrentUserProfileId();
-                vm.Comment.PostId = vm.Post.Id;
-                _commentRepository.DeleteComment(id);
+                //vm.Comment.Id = vm.Post.Id;
+                Comments returnedComment = _commentRepository.GetCommentById(comment.Id);
+                _commentRepository.DeleteComment(comment.Id);
 
-                return RedirectToAction("Index", new { id = vm.Post.Id });
+                return RedirectToAction("Index", new { id = returnedComment.PostId });
             }
             catch (Exception ex)
             {
-                return View(vm);
+                return View(comment);
             }
         }
     }

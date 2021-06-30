@@ -1,4 +1,4 @@
-﻿@model TabloidMVC.Models.Post
+﻿@model TabloidMVC.Models.ViewModels.PostEditViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -14,35 +14,40 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
            
             <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
+                <label asp-for="post.Title" class="control-label"></label>
+                <input asp-for="post.Title" class="form-control" />
+                <span asp-validation-for="post.Title" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Content" class="control-label"></label>
-                <input asp-for="Content" class="form-control" />
-                <span asp-validation-for="Content" class="text-danger"></span>
+                <label asp-for="post.Content" class="control-label"></label>
+                <input asp-for="post.Content" class="form-control" />
+                <span asp-validation-for="post.Content" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ImageLocation" class="control-label"></label>
-                <input asp-for="ImageLocation" class="form-control" />
-                <span asp-validation-for="ImageLocation" class="text-danger"></span>
-            </div>
-           
-            <div class="form-group">
-                <label asp-for="PublishDateTime" class="control-label"></label>
-                <input asp-for="PublishDateTime" class="form-control" />
-                <span asp-validation-for="PublishDateTime" class="text-danger"></span>
+                <label asp-for="post.ImageLocation" class="control-label"></label>
+                <input asp-for="post.ImageLocation" class="form-control" />
+                <span asp-validation-for="post.ImageLocation" class="text-danger"></span>
             </div>
            
             <div class="form-group">
-                <label asp-for="CategoryId" class="control-label"></label>
-                <input asp-for="CategoryId" class="form-control" />
-                <span asp-validation-for="CategoryId" class="text-danger"></span>
+                <label asp-for="post.PublishDateTime" class="control-label"></label>
+                <input asp-for="post.PublishDateTime" class="form-control" />
+                <span asp-validation-for="post.PublishDateTime" class="text-danger"></span>
+            </div>
+           
+            <div class="form-group">
+                <label asp-for="post.CategoryId" class="control-label"></label>
+                <select asp-for="post.CategoryId" class="form-control">
+                    @foreach (var category in Model.categories)
+                    {
+                        <option value="@category.Id">@category.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="post.CategoryId" class="text-danger"></span>
             </div>
          
             <div class="form-group">
-                <input asp-action="Details" asp-route-id="@Model.Id" type="submit" value="Save" class="btn btn-primary" />
+                <input  type="submit" value="Save" class="btn btn-primary" />
                 <a asp-action="Index" class="btn btn-primary">Cancel</a>
             </div>
         </form>

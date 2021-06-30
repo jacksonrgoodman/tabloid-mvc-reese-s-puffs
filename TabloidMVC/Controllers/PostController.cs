@@ -7,6 +7,7 @@ using TabloidMVC.Models.ViewModels;
 using TabloidMVC.Repositories;
 using TabloidMVC.Models;
 using System;
+using System.Collections.Generic;
 
 namespace TabloidMVC.Controllers
 {
@@ -106,12 +107,15 @@ namespace TabloidMVC.Controllers
         public ActionResult Edit(int id)
         {
             Post post = _postRepository.GetPostById(id);
-            if (post == null)
-            {
-                return NotFound();
-            }
+            List<Category> category = _categoryRepository.GetAll();
+            PostEditViewModel vm = new PostEditViewModel()
+            { post = post, 
+              categories= category
+            };
+           
+           
 
-            return View(post);
+            return View(vm);
         }
 
         // POST: Post/Edit/EXAMPLE ID
@@ -120,17 +124,23 @@ namespace TabloidMVC.Controllers
         public ActionResult Edit(int id, Post post)
         {
 
+                Post currentPost = _postRepository.GetPostById(id);
+            List<Category> category = _categoryRepository.GetAll();
+            PostEditViewModel vm = new PostEditViewModel()
+            {
+                post = post,
+                categories = category
+            };
             try
             {
                 post.Id = id;
-                Post currentPost = _postRepository.GetPostById(id);
                 _postRepository.UpdatePost(post);
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Details",new { id = vm.post.Id});
             }
             catch (Exception ex)
             {
-                return View(post);
+                return View(vm);
             }
         }
 

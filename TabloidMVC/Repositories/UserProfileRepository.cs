@@ -256,7 +256,7 @@ namespace TabloidMVC.Repositories
             }
         }
 
-        public void Register(UserProfile user)
+        public UserProfile Register(UserProfile user)
         {
             using (SqlConnection conn = Connection)
             {
@@ -277,11 +277,12 @@ namespace TabloidMVC.Repositories
                     int id = (int)cmd.ExecuteScalar();
 
                     user.Id = id;
+                    return (user);
                 }
             }
         }
 
-
+       
     }
 }
 

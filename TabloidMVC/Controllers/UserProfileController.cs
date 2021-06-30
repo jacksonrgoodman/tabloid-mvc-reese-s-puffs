@@ -44,27 +44,27 @@ namespace TabloidMVC.Controllers
             return View(user);
         }
 
-        // GET: UserProfile/Create
-        public ActionResult Register()
-        {
-            return View();
-        }
+        //// GET: UserProfile/Create
+        //public ActionResult Register()
+        //{
+        //    return View();
+        //}
 
-        // POST: UserProfile/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Register(UserProfile user)
-        {
-            try
-            {
-                _userRepo.Register(user);
-                return RedirectToAction("Index");
-            }
-            catch(Exception)
-            {
-                return View(user);
-            }
-        }
+        //// POST: UserProfile/Create
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Register(UserProfile user)
+        //{
+        //    try
+        //    {
+        //        _userRepo.Register(user);
+        //        return RedirectToAction("Index");
+        //    }
+        //    catch(Exception)
+        //    {
+        //        return View(user);
+        //    }
+        //}
 
         // GET: UserProfile/Edit/5
         public ActionResult Reactivate(int id)

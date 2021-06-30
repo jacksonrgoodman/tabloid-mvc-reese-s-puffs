@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TabloidMVC.Models;
 using TabloidMVC.Utils;
 
+
 namespace TabloidMVC.Repositories
 {
     public class UserProfileRepository : BaseRepository, IUserProfileRepository
@@ -278,6 +279,28 @@ namespace TabloidMVC.Repositories
 
                     user.Id = id;
                     return (user);
+                }
+            }
+        }
+
+        public void UpdateUser (UserProfile user)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+
+                using(SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                            UPDATE UserProfile
+                            SET
+                                UserTypeId = @userTypeId
+                            WHERE Id =@id";
+
+                    cmd.Parameters.AddWithValue("@userTypeId", user.UserTypeId);
+                    cmd.Parameters.AddWithValue("@id", user.Id);
+
+                    cmd.ExecuteNonQuery();
                 }
             }
         }

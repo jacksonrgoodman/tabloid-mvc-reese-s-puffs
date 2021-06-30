@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TabloidMVC.Models;
+using TabloidMVC.Models.ViewModels;
 using TabloidMVC.Repositories;
 
 namespace TabloidMVC.Controllers
@@ -13,10 +14,12 @@ namespace TabloidMVC.Controllers
     {
 
         private readonly IUserProfileRepository _userRepo;
+        private readonly IUserTypeRepository _userTypeRepo;
 
-        public UserProfileController(IUserProfileRepository UserProfileRepository)
+        public UserProfileController(IUserProfileRepository UserProfileRepository, IUserTypeRepository UserTypeRepository)
         {
             _userRepo = UserProfileRepository;
+            _userTypeRepo = UserTypeRepository;
          }
         // GET: UserProfile
         public ActionResult Index()
@@ -42,6 +45,36 @@ namespace TabloidMVC.Controllers
                 return NotFound();
             }
             return View(user);
+        }
+
+        public IActionResult Edit(int id)
+        {
+            UserProfile user = _userRepo.GetUsersById(id);
+            List<UserType> userTypes = _userTypeRepo.GetAll();
+
+            UserFormViewModel vm = new UserFormViewModel()
+            {
+                UserProfile = user,
+                UserTypes = userTypes
+            };
+
+            return View(vm);
+        }
+
+        // POST: WalkersController/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(int id, UserProfile userProfile)
+        {
+            try
+            {
+                _userRepo.UpdateUser(userProfile);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return View(userProfile);
+            }
         }
 
         //// GET: UserProfile/Create

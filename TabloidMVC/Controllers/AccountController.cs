@@ -25,8 +25,9 @@ namespace TabloidMVC.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(UserProfile user)
         {
+            
             var userProfile = _userProfileRepository.Register(user);
-
+           
       
             var claims = new List<Claim>
             {
@@ -42,6 +43,7 @@ namespace TabloidMVC.Controllers
                 new ClaimsPrincipal(claimsIdentity));
 
             return RedirectToAction("Index", "Home");
+            
         }
 
         public IActionResult Login()

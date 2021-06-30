@@ -68,7 +68,7 @@ namespace TabloidMVC.Repositories
                 }
             }
         }
-        public void AddTagToPost(Tag tag, Post post)
+        public void AddTagToPost(int tag, int post)
         {
             using (SqlConnection conn = Connection)
             {
@@ -81,12 +81,10 @@ namespace TabloidMVC.Repositories
                     VALUES (@postid, @tagid);
                 ";
 
-                    cmd.Parameters.AddWithValue("@postid", post.Id);
-                    cmd.Parameters.AddWithValue("@tagid", tag.Id);
+                    cmd.Parameters.AddWithValue("@postid", post);
+                    cmd.Parameters.AddWithValue("@tagid", tag);
 
                     int id = (int)cmd.ExecuteScalar();
-
-                    tag.Id = id;
                 }
             }
         }

@@ -24,7 +24,7 @@ namespace TabloidMVC.Controllers
             return View(tags);
         }
         //TODO GET: Tags/AddTagToPost
-        public IActionResult AddTagToPost(int id)
+        public IActionResult ManageTags(int id)
         {
             var vm = new PostTagViewModel();
             vm.Post = new Post();
@@ -32,14 +32,11 @@ namespace TabloidMVC.Controllers
             vm.Tags = _tagRepository.GetAllTags();
             return View(vm);
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult AddTagToPost(PostTagViewModel vm)
+        public ActionResult AddTagToPost(int post, int tag)
         {
             try
             {
-                //vm.TagId = vm.Tag.Id;
-                //_tagRepository.AddTagToPost(vm.Tag.Id, vm.Post.Id);
+                _tagRepository.AddTagToPost(tag, post);
                 return RedirectToAction("Index");
             }
 

@@ -4,7 +4,7 @@
     ViewData["Title"] = "AddTagToPost";
 }
 
-<h1>AddTagToPost</h1>
+<h1>Manage Tags</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -20,7 +20,7 @@
         </tr>
     </thead>
     <tbody>
-        <!--@foreach (var item in Model.Tag)
+        @foreach (var item in Model.Tags)
         {
             <tr>
 
@@ -28,11 +28,11 @@
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    @Html.ActionLink("Add Tag", "AddTagToPost", new { post = item.Id, tag = item.Id }) |
-                    @Html.ActionLink("Remove Tag", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("Add Tag", "AddTagToPost", new { post = Model.Post.Id, tag = item.Id }) |
+                    @Html.ActionLink("Remove Tag", "RemoveTagFrom Post", new { post = Model.Post.Id, tag = item.Id }) |
 
                 </td>
             </tr>
-        }-->
+        }
     </tbody>
 </table>

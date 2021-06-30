@@ -141,15 +141,24 @@ namespace TabloidMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Deactivate(int id, UserProfile user)
         {
-            try
+            int admin = _userRepo.Admin();
+            if(admin > 1)
             {
-                _userRepo.DeactivateUser(user);
-                return RedirectToAction("Index");
+                try
+                {
+                    _userRepo.DeactivateUser(user);
+                    return RedirectToAction("Index");
+                }
+                catch (Exception)
+                {
+                    return View(user);
+                }
             }
-            catch (Exception)
+            else
             {
-                return View(user);
+                ViewBag.ErrorMessage = "Can not deactivate admin. Please make other user admin before deactivating";
             }
+            
         }
 
         // GET: UserProfile/Delete/5

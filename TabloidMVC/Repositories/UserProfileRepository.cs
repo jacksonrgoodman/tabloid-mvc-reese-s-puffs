@@ -283,13 +283,13 @@ namespace TabloidMVC.Repositories
             }
         }
 
-        public void UpdateUser (UserProfile user)
+        public void UpdateUser(UserProfile user)
         {
             using (SqlConnection conn = Connection)
             {
                 conn.Open();
 
-                using(SqlCommand cmd = conn.CreateCommand())
+                using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
                             UPDATE UserProfile
@@ -305,7 +305,38 @@ namespace TabloidMVC.Repositories
             }
         }
 
-       
-    }
-}
+        public int Admin()
+        {
+            using (SqlConnection conn = Connection)
+            {
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                                    SELECT Count(Id)
+                                    FROM UserProfile
+                                    WHERE UserTypeId = 1 and Active = 1";
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+
+                    int adminCount = new int();
+                    while (reader.Read())
+                    {
+
+
+                        {
+                            adminCount = reader.GetInt32(reader.GetOrdinal("Id"));
+                        }
+
+
+                    }
+                    reader.Close();
+                    return adminCount;
+
+                }
+            }
+
+
+        }
+    } }
 

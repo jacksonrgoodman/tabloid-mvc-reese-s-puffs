@@ -1,4 +1,4 @@
-﻿@model TabloidMVC.Models.Comments
+﻿@model TabloidMVC.Models.ViewModels.CommentViewModel
 
 @{
     ViewData["Title"] = "Delete";
@@ -11,46 +11,46 @@
     <h4>Comments</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
+        @*<dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Comment.Id)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Id)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Comment.Id)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PostId)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Post.Id)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PostId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UserProfileId)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Post.Id)
+        </dd>*@
+        @*<dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserProfile.Id)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UserProfileId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Subject)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserProfile.Id)
+        </dd>*@
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Comment.Subject)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Subject)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Comment.Subject)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Content)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Comment.Content)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Content)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Comment.Content)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreateDateTime)
+        @*<dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Comment.CreateDateTime)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreateDateTime)
-        </dd>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Comment.CreateDateTime)
+        </dd>*@
     </dl>
-    
-    <form asp-action="Delete">
+
+    <form asp-action="Delete" asp-route-id="@Model.Post.Id">
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <a asp-action="Index" asp-route-id="@Model.Post.Id">Back to List</a>
     </form>
 </div>

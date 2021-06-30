@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TabloidMVC.Models;
+using TabloidMVC.Models.ViewModels;
 using TabloidMVC.Repositories;
 
 namespace TabloidMVC.Controllers
@@ -23,19 +24,22 @@ namespace TabloidMVC.Controllers
             return View(tags);
         }
         //TODO GET: Tags/AddTagToPost
-        public IActionResult AddTagToPost()
+        public IActionResult AddTagToPost(int id)
         {
-            var tags = _tagRepository.GetAllTags();
-            return View(tags);
+            var vm = new PostTagViewModel();
+            vm.Post = new Post();
+            vm.Post.Id = id;
+            vm.Tags = _tagRepository.GetAllTags();
+            return View(vm);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddTagToPost(Tag tag, Post post)
+        public ActionResult AddTagToPost(PostTagViewModel vm)
         {
-            var tags = _tagRepository.GetAllTags();
             try
             {
-                _tagRepository.AddTagToPost(tag, post);
+                vm.TagId = vm.Tags.Id;
+                _tagRepository.AddTagToPost(vm.Tags.Id, vm.Post.Id);
                 return RedirectToAction("Index");
             }
 

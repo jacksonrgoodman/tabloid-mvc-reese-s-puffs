@@ -98,9 +98,35 @@ namespace TabloidMVC.Controllers
                 //vm.Comment.UserProfileId = GetCurrentUserProfileId();
                 //vm.Comment.Id = vm.Post.Id;
                 Comments returnedComment = _commentRepository.GetCommentById(comment.Id);
-                _commentRepository.DeleteComment(comment.Id);
+                _commentRepository.UpdateComment(comment.Id);
 
                 return RedirectToAction("Index", new { id = returnedComment.PostId });
+            }
+            catch (Exception ex)
+            {
+                return View(comment);
+            }
+        }
+
+        //Get: comment/edit
+        public ActionResult Edit(int id)
+        {
+            Comments comment = _commentRepository.GetCommentById(id);
+            return View(comment);
+        }
+
+
+        // POST: Comment/Delete
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(Comments comment)
+        {
+            try
+            {
+                Comments returnedComment = _commentRepository.GetCommentById(comment.Id);
+                _commentRepository.UpdateComment(comment.Id);
+
+                return RedirectToAction("Index", new { id = comment.PostId });
             }
             catch (Exception ex)
             {

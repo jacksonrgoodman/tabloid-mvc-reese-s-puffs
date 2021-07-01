@@ -1,0 +1,46 @@
+﻿@model TabloidMVC.Models.ViewModels.PostTagViewModel
+
+@{
+    ViewData["Title"] = "AddTagToPost";
+}
+
+<h1>Manage Tags</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Tag)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Tags)
+        {
+            <tr>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @if (Model.AssociatedTags.Any(a => a.TagId == item.Id))
+                    {
+                        @Html.ActionLink("Remove Tag", "RemoveTagFromPost", new { post = Model.Post.Id, tag = item.Id }) 
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Add Tag", "AddTagToPost", new { post = Model.Post.Id, tag = item.Id }) 
+                    }
+
+
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -17,6 +17,34 @@ namespace TabloidMVC.Controllers
         {
             _userProfileRepository = userProfileRepository;
         }
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(UserProfile user)
+        {
+            
+            var userProfile = _userProfileRepository.Register(user);
+           
+      
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, userProfile.Id.ToString()),
+                new Claim(ClaimTypes.Email, userProfile.Email),
+            };
+
+            var claimsIdentity = new ClaimsIdentity(
+                claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity));
+
+            return RedirectToAction("Index", "Home");
+            
+        }
 
         public IActionResult Login()
         {
@@ -28,7 +56,7 @@ namespace TabloidMVC.Controllers
         {
             var userProfile = _userProfileRepository.GetByEmail(credentials.Email);
 
-            if (userProfile == null)
+            if (userProfile == null || userProfile.Active == 0)
             {
                 ModelState.AddModelError("Email", "Invalid email");
                 return View();

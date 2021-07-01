@@ -20,7 +20,7 @@ namespace TabloidMVC.Controllers
         {
             _userRepo = UserProfileRepository;
             _userTypeRepo = UserTypeRepository;
-         }
+        }
         // GET: UserProfile
         public ActionResult Index()
         {
@@ -30,7 +30,7 @@ namespace TabloidMVC.Controllers
         public ActionResult DeactivateUsers()
         {
             List<UserProfile> deactivated = _userRepo.GetDeactivated();
-           
+
             return View(deactivated);
 
 
@@ -40,7 +40,7 @@ namespace TabloidMVC.Controllers
         public ActionResult Details(int id)
         {
             UserProfile user = _userRepo.GetUsersById(id);
-            if(user == null)
+            if (user == null)
             {
                 return NotFound();
             }
@@ -120,7 +120,7 @@ namespace TabloidMVC.Controllers
                 _userRepo.ReactivateUser(user);
                 return RedirectToAction("Index");
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return View(user);
             }
@@ -141,35 +141,65 @@ namespace TabloidMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Deactivate(int id, UserProfile user)
         {
-            try
+            if (user.UserTypeId == 1)
             {
-                _userRepo.DeactivateUser(user);
-                return RedirectToAction("Index");
+                int admin = _userRepo.Admin();
+                if (admin > 1)
+                {
+                    try
+                    {
+                        _userRepo.DeactivateUser(user);
+                        return RedirectToAction("Index");
+                    }
+                    catch (Exception)
+                    {
+                        return View(user);
+                    }
+                }
+                else
+                {
+                    
+                        return View("Warning");
+                    
+                    //return Content("You cannot delete the only admin!");
+                }
             }
-            catch (Exception)
+            else
             {
-                return View(user);
+                try
+                {
+                    _userRepo.DeactivateUser(user);
+                    return RedirectToAction("Index");
+                }
+                catch (Exception)
+                {
+                    return View(user);
+                }
             }
+
+
+
+
         }
 
         // GET: UserProfile/Delete/5
         public ActionResult Delete(int id)
         {
-                return View();
-                    
+            return View();
+
         }
 
         // POST: UserProfile/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id,UserProfile user)
+        public ActionResult Delete(int id, UserProfile user)
         {
             try
             {
-               
+
                 return RedirectToAction("Index");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return View(user);
             }

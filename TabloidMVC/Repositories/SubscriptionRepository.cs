@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using TabloidMVC.Models;
@@ -16,14 +17,13 @@ namespace TabloidMVC.Repositories
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"INSERT INTO Subscription (SubscriberUserProfileId, ProviderUserProfileId, )
+                    cmd.CommandText = @"INSERT INTO Subscription (SubscriberUserProfileId, ProviderUserProfileId)
                         OUTPUT INSERTED.ID
-                        VALUES (@subscriptionUserProfileId)";
+                        VALUES (@subscriptionUserProfileId, @providerUserProfileId)";
 
-                    cmd.Parameters.AddWithValue("@subsciptionUserProfileId", subscription.SubscriberUserProfileId);
+                    cmd.Parameters.AddWithValue("@subscriptionUserProfileId", subscription.SubscriberUserProfileId);
                     cmd.Parameters.AddWithValue("@providerUserProfileId", subscription.ProviderUserProfileId);
-                    cmd.Parameters.AddWithValue("@beginDateTime", subscription.BeginDateTime);
-                    cmd.Parameters.AddWithValue("@endDateTime", subscription.EndDateTime);
+                    
 
                     int id = (int)cmd.ExecuteScalar();
 

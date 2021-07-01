@@ -17,6 +17,8 @@ namespace TabloidMVC.Models
         public string Content { get; set; }
 
         [DisplayName("Date")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime CreateDateTime { get; set; } 
         public UserProfile UserProfile { get; set; }
         public Post Post { get; set; }

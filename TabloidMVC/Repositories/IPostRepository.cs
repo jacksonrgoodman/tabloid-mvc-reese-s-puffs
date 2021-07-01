@@ -6,6 +6,9 @@ namespace TabloidMVC.Repositories
     public interface IPostRepository
     {
         void Add(Post post);
+        void DeletePost(int id);
+        void UpdatePost(Post post);
+        Post GetPostById(int id);
         List<Post> GetAllPublishedPosts();
         List<PostTag> GetTagByPostId(int PostId);
         Post GetPublishedPostById(int id);

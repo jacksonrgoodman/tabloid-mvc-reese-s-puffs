@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using TabloidMVC.Models;
 using TabloidMVC.Utils;
@@ -273,7 +274,16 @@ namespace TabloidMVC.Repositories
                     cmd.Parameters.AddWithValue("@lastName", user.LastName);
                     cmd.Parameters.AddWithValue("@displayName", user.DisplayName);
                     cmd.Parameters.AddWithValue("@email", user.Email);
-                    cmd.Parameters.AddWithValue("@imageLocation", user.ImageLocation);
+                    if(user.ImageLocation != null)
+                    {
+                        cmd.Parameters.AddWithValue("@imageLocation", user.ImageLocation);
+                    }
+                    else
+                    {
+                        cmd.Parameters.AddWithValue("@imageLocation", DBNull.Value);
+                    }
+                    
+                    
 
                     int id = (int)cmd.ExecuteScalar();
 
@@ -283,13 +293,13 @@ namespace TabloidMVC.Repositories
             }
         }
 
-        public void UpdateUser (UserProfile user)
+        public void UpdateUser(UserProfile user)
         {
             using (SqlConnection conn = Connection)
             {
                 conn.Open();
 
-                using(SqlCommand cmd = conn.CreateCommand())
+                using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
                             UPDATE UserProfile
@@ -305,7 +315,39 @@ namespace TabloidMVC.Repositories
             }
         }
 
-       
-    }
-}
+        public int Admin()
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                                    SELECT Count(Id) as AdminCounts
+                                    FROM UserProfile
+                                    WHERE UserTypeId = 1 and Active = 1";
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+
+                    int adminCount = 0;
+                    while (reader.Read())
+                    {
+
+
+                        {
+                            adminCount = reader.GetInt32(reader.GetOrdinal("AdminCounts"));
+                        }
+
+
+                    }
+                    reader.Close();
+                    return adminCount;
+
+                }
+            }
+
+
+        }
+    } }
 

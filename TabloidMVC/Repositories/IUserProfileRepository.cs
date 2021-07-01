@@ -14,5 +14,7 @@ namespace TabloidMVC.Repositories
          public UserProfile Register(UserProfile user);
 
         void UpdateUser(UserProfile user);
+
+        public int Admin();
     }
 }

@@ -78,5 +78,60 @@ namespace TabloidMVC.Controllers
             string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
             return int.Parse(id);
         }
+
+        //Get: comment/delete
+        public ActionResult Delete(int id)
+        {
+            Comments comment = _commentRepository.GetCommentById(id);
+            return View(comment);
+        }
+
+       
+        // POST: Comment/Delete
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(Comments comment)
+        {
+            try
+            {
+
+                //vm.Comment.UserProfileId = GetCurrentUserProfileId();
+                //vm.Comment.Id = vm.Post.Id;
+                Comments returnedComment = _commentRepository.GetCommentById(comment.Id);
+                _commentRepository.DeleteComment(comment.Id);
+
+                return RedirectToAction("Index", new { id = returnedComment.PostId });
+            }
+            catch (Exception ex)
+            {
+                return View(comment);
+            }
+        }
+
+        //Get: comment/edit
+        public ActionResult Edit(int id)
+        {
+            Comments comment = _commentRepository.GetCommentById(id);
+            return View(comment);
+        }
+
+
+        // POST: Comment/Delete
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(Comments comment)  
+            {
+            try
+            {
+                //Comments returnedComment = _commentRepository.GetCommentById(comment.Id);
+                _commentRepository.UpdateComment(comment);
+
+                return RedirectToAction("Index", new { id = comment.PostId });
+            }
+            catch (Exception ex)
+            {
+                return View(comment);
+            }
+        }
     }
 }

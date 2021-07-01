@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TabloidMVC.Models;
 using TabloidMVC.Utils;
 
+
 namespace TabloidMVC.Repositories
 {
     public class UserProfileRepository : BaseRepository, IUserProfileRepository
@@ -110,7 +111,7 @@ namespace TabloidMVC.Repositories
             }
         }
 
-       public List<UserProfile> GetDeactivated()
+        public List<UserProfile> GetDeactivated()
         {
             using (SqlConnection conn = Connection)
             {
@@ -157,7 +158,7 @@ namespace TabloidMVC.Repositories
                 }
             }
         }
-    
+
         public UserProfile GetUsersById(int id)
         {
             using (SqlConnection conn = Connection)
@@ -256,7 +257,55 @@ namespace TabloidMVC.Repositories
             }
         }
 
+        public UserProfile Register(UserProfile user)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        INSERT INTO UserProfile (FirstName, LastName, DisplayName, Email, ImageLocation)
+                        OUTPUT INSERTED.ID
+                        VALUES(@firstName, @lastName, @displayName, @email, @imageLocation) ";
 
+                    cmd.Parameters.AddWithValue("@firstName", user.FirstName);
+                    cmd.Parameters.AddWithValue("@lastName", user.LastName);
+                    cmd.Parameters.AddWithValue("@displayName", user.DisplayName);
+                    cmd.Parameters.AddWithValue("@email", user.Email);
+                    cmd.Parameters.AddWithValue("@imageLocation", user.ImageLocation);
 
+                    int id = (int)cmd.ExecuteScalar();
+
+                    user.Id = id;
+                    return (user);
+                }
+            }
+        }
+
+        public void UpdateUser (UserProfile user)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+
+                using(SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                            UPDATE UserProfile
+                            SET
+                                UserTypeId = @userTypeId
+                            WHERE Id =@id";
+
+                    cmd.Parameters.AddWithValue("@userTypeId", user.UserTypeId);
+                    cmd.Parameters.AddWithValue("@id", user.Id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+       
     }
 }
+

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TabloidMVC.Models;
+using TabloidMVC.Models.ViewModels;
 using TabloidMVC.Repositories;
 
 namespace TabloidMVC.Controllers
@@ -13,10 +14,12 @@ namespace TabloidMVC.Controllers
     {
 
         private readonly IUserProfileRepository _userRepo;
+        private readonly IUserTypeRepository _userTypeRepo;
 
-        public UserProfileController(IUserProfileRepository UserProfileRepository)
+        public UserProfileController(IUserProfileRepository UserProfileRepository, IUserTypeRepository UserTypeRepository)
         {
             _userRepo = UserProfileRepository;
+            _userTypeRepo = UserTypeRepository;
          }
         // GET: UserProfile
         public ActionResult Index()
@@ -44,26 +47,57 @@ namespace TabloidMVC.Controllers
             return View(user);
         }
 
-        // GET: UserProfile/Create
-        public ActionResult Create()
+        public IActionResult Edit(int id)
         {
-            return View();
+            UserProfile user = _userRepo.GetUsersById(id);
+            List<UserType> userTypes = _userTypeRepo.GetAll();
+
+            UserFormViewModel vm = new UserFormViewModel()
+            {
+                UserProfile = user,
+                UserTypes = userTypes
+            };
+
+            return View(vm);
         }
 
-        // POST: UserProfile/Create
+        // POST: WalkersController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Edit(int id, UserProfile userProfile)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                _userRepo.UpdateUser(userProfile);
+                return RedirectToAction("Index");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                return View(userProfile);
             }
         }
+
+        //// GET: UserProfile/Create
+        //public ActionResult Register()
+        //{
+        //    return View();
+        //}
+
+        //// POST: UserProfile/Create
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Register(UserProfile user)
+        //{
+        //    try
+        //    {
+        //        _userRepo.Register(user);
+        //        return RedirectToAction("Index");
+        //    }
+        //    catch(Exception)
+        //    {
+        //        return View(user);
+        //    }
+        //}
 
         // GET: UserProfile/Edit/5
         public ActionResult Reactivate(int id)

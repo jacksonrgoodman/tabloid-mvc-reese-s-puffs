@@ -158,7 +158,10 @@ namespace TabloidMVC.Controllers
                 }
                 else
                 {
-                    return Content("You cannot delete the only admin!");
+                    
+                        return View("Warning");
+                    
+                    //return Content("You cannot delete the only admin!");
                 }
             }
             else

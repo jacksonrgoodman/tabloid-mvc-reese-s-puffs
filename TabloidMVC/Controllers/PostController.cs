@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualBasic;
+using System;
 using System.Security.Claims;
+using TabloidMVC.Models;
 using TabloidMVC.Models.ViewModels;
 using TabloidMVC.Repositories;
 using TabloidMVC.Models;
@@ -16,11 +18,13 @@ namespace TabloidMVC.Controllers
     {
         private readonly IPostRepository _postRepository;
         private readonly ICategoryRepository _categoryRepository;
+        private readonly ITagRepository _tagRepository;
 
-        public PostController(IPostRepository postRepository, ICategoryRepository categoryRepository)
+        public PostController(IPostRepository postRepository, ICategoryRepository categoryRepository, ITagRepository tagRepository)
         {
             _postRepository = postRepository;
             _categoryRepository = categoryRepository;
+            _tagRepository = tagRepository;
         }
 
         public IActionResult Index()
@@ -39,17 +43,61 @@ namespace TabloidMVC.Controllers
 
         public IActionResult Details(int id)
         {
-            var post = _postRepository.GetPublishedPostById(id);
-            if (post == null)
+            var vm = new PostDetailViewModel();
+            vm.Post = new Post();
+            vm.AssociatedTags = _postRepository.GetTagByPostId(id);
+
+            vm.Post = _postRepository.GetPublishedPostById(id);
+            if (vm.Post == null)
             {
                 int userId = GetCurrentUserProfileId();
-                post = _postRepository.GetUserPostById(id, userId);
-                if (post == null)
+                vm.Post = _postRepository.GetUserPostById(id, userId);
+                if (vm.Post == null)
                 {
                     return NotFound();
                 }
             }
-            return View(post);
+            return View(vm);
+        }
+
+        //TODO GET: Tags/AddTagToPost
+        public IActionResult ManageTags(int id)
+        {
+            var vm = new PostTagViewModel();
+            vm.Post = new Post();
+            vm.Post.Id = id;
+            vm.Tags = _tagRepository.GetAllTags();
+            vm.AssociatedTags = _postRepository.GetTagByPostId(id);
+
+            return View(vm);
+        }
+        public ActionResult AddTagToPost(int post, int tag)
+        {
+            try
+            {
+                _tagRepository.AddTagToPost(tag, post);
+                
+                return RedirectToAction("Details", new { id = post });
+            }
+
+            catch (Exception ex)
+            {
+                return View();
+            }
+        }
+        public ActionResult RemoveTagFromPost(int post, int tag)
+        {
+            try
+            {
+                _tagRepository.RemoveTagFromPost(tag, post);
+                
+                return RedirectToAction("Details", new { id = post });
+            }
+
+            catch (Exception ex)
+            {
+                return View();
+            }
         }
 
         public IActionResult Create()

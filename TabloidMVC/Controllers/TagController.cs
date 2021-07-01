@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TabloidMVC.Models;
+using TabloidMVC.Models.ViewModels;
 using TabloidMVC.Repositories;
 
 namespace TabloidMVC.Controllers
@@ -12,15 +13,56 @@ namespace TabloidMVC.Controllers
     public class TagController : Controller
     {
         private readonly ITagRepository _tagRepository;
+        private readonly IPostRepository _postRepository;
 
-        public TagController(ITagRepository tagRepository)
+        public TagController(ITagRepository tagRepository, IPostRepository postRepository)
         {
             _tagRepository = tagRepository;
+            _postRepository = postRepository;
+
         }
         public IActionResult Index()
         {
             var tags = _tagRepository.GetAllTags();
             return View(tags);
+        }
+        //TODO GET: Tags/AddTagToPost
+        public IActionResult ManageTags(int id)
+        {
+            var vm = new PostTagViewModel();
+            vm.Post = new Post();
+            vm.Post.Id = id;
+            vm.Tags = _tagRepository.GetAllTags();
+
+            return View(vm);
+        }
+        public ActionResult AddTagToPost(int post, int tag)
+        {
+            try
+            {
+                _tagRepository.AddTagToPost(tag, post);
+                var postrepo = _postRepository.GetAllPublishedPosts();
+                return View(postrepo);
+            }
+
+            catch (Exception ex)
+            {
+                return View();
+            }
+        }
+        public ActionResult RemoveTagFromPost(int post, int tag)
+        {
+            try
+            {
+                _tagRepository.RemoveTagFromPost(tag, post);
+                var postrepo = _postRepository.GetAllPublishedPosts();
+                return RedirectToAction();
+            }
+
+            catch (Exception ex)
+            {
+                return View();
+            }
         }
         //TODO GET: Tags/Create
         public IActionResult Create()

@@ -7,7 +7,7 @@
 <h1>Comment</h1>
 
 <p>
-    <a asp-action="Create" asp-route-id="@Model.Post.Id">Create New</a>
+    <a asp-action="Create" asp-route-id="@Model.Post.Id" >Create New</a>
 </p>
 
 
@@ -60,14 +60,14 @@
                 </td>
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                    
                     @Html.ActionLink("Delete", "Delete", new { id = item.Id })
                 </td>
             </tr>
         }
     </tbody>
     <a asp-controller="Post"  class="btn btn-outline-primary mx-1" title="View posts">
-        <i class="fas "></i>
+        <i class="fas fa-eye"></i>
     </a>
     <div>
         <label class="font-weight-bold">Post:</label>

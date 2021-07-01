@@ -22,15 +22,20 @@
                 <a asp-action="Delete" asp-route-id="@Model.Post.Id" class="btn btn-outline-primary mx-1" title="Delete">
                     <i class="fas fa-trash"></i>
                 </a>
-
                 @*asp-controller is what redirects the comment button to the comment page.*@
+<<<<<<< HEAD
                 <a asp-controller="Comment" asp-action="Index" asp-route-id="@Model.Post.Id" class="btn btn-outline-primary mx-1" title="View Comments">
                     <i class="fas fa-solid fa-tags"></i>
+=======
+                <a asp-controller="Comment" asp-action="Index" asp-route-id="@Model.Id" class="btn btn-outline-primary mx-1" title="View Comments">
+                    <i class="fas fa-solid fa-comment"></i>
+>>>>>>> 09377740e6c3d11c5d1141a75428546b807bf8ed
                 </a>
                 @*asp-controller is what redirects the comment button to the manage post tags.*@
                 <a asp-controller="Post" asp-action="ManageTags" asp-route-id="@Model.Post.Id" class="btn btn-outline-primary mx-2" title="Manage Tags">
                     <i class="fas fa-solid fa-tags"></i>
                 </a>
+
             </div>
         </section>
         <hr />

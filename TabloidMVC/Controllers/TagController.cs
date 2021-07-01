@@ -13,10 +13,13 @@ namespace TabloidMVC.Controllers
     public class TagController : Controller
     {
         private readonly ITagRepository _tagRepository;
+        private readonly IPostRepository _postRepository;
 
-        public TagController(ITagRepository tagRepository)
+        public TagController(ITagRepository tagRepository, IPostRepository postRepository)
         {
             _tagRepository = tagRepository;
+            _postRepository = postRepository;
+
         }
         public IActionResult Index()
         {
@@ -30,6 +33,7 @@ namespace TabloidMVC.Controllers
             vm.Post = new Post();
             vm.Post.Id = id;
             vm.Tags = _tagRepository.GetAllTags();
+
             return View(vm);
         }
         public ActionResult AddTagToPost(int post, int tag)
@@ -37,7 +41,8 @@ namespace TabloidMVC.Controllers
             try
             {
                 _tagRepository.AddTagToPost(tag, post);
-                return RedirectToAction("Index");
+                var postrepo = _postRepository.GetAllPublishedPosts();
+                return View(postrepo);
             }
 
             catch (Exception ex)
@@ -50,7 +55,8 @@ namespace TabloidMVC.Controllers
             try
             {
                 _tagRepository.RemoveTagFromPost(tag, post);
-                return RedirectToAction("Index");
+                var postrepo = _postRepository.GetAllPublishedPosts();
+                return RedirectToAction();
             }
 
             catch (Exception ex)

@@ -28,8 +28,16 @@
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    @Html.ActionLink("Add Tag", "AddTagToPost", new { post = Model.Post.Id, tag = item.Id }) |
-                    @Html.ActionLink("Remove Tag", "RemoveTagFromPost", new { post = Model.Post.Id, tag = item.Id }) |
+                    @if (Model.AssociatedTags.Any(a => a.TagId == item.Id))
+                    {
+                        @Html.ActionLink("Remove Tag", "RemoveTagFromPost", new { post = Model.Post.Id, tag = item.Id }) 
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Add Tag", "AddTagToPost", new { post = Model.Post.Id, tag = item.Id }) 
+                    }
+
+
 
                 </td>
             </tr>

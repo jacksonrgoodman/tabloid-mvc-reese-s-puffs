@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace TabloidMVC.Models.ViewModels
 {
-    public class PostTagViewModel
+    public class PostDetailViewModel
     {
         public Post Post { get; set; }
         public Tag Tag { get; set; }

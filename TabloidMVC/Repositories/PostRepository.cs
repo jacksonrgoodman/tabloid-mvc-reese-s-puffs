@@ -156,6 +156,8 @@ namespace TabloidMVC.Repositories
 
                     cmd.Parameters.AddWithValue("@id", id);
                     cmd.Parameters.AddWithValue("@userProfileId", userProfileId);
+
+
                     var reader = cmd.ExecuteReader();
 
                     Post post = null;

@@ -68,6 +68,44 @@ namespace TabloidMVC.Repositories
                 }
             }
         }
+        public void AddTagToPost(int tag, int post)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                    INSERT INTO PostTag (PostId, TagId)
+                    OUTPUT INSERTED.ID
+                    VALUES (@postid, @tagid);
+                ";
+
+                    cmd.Parameters.AddWithValue("@postid", post);
+                    cmd.Parameters.AddWithValue("@tagid", tag);
+
+                    int id = (int)cmd.ExecuteScalar();
+                }
+            }
+        }
+        public void RemoveTagFromPost(int tag, int post)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                    DELETE FROM PostTag WHERE PostId = @postid  AND TagId = @tagid  ;
+                ";
+
+                    cmd.Parameters.AddWithValue("@postid", post);
+                    cmd.Parameters.AddWithValue("@tagid", tag);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
         public void AddTag(Tag tag)
         {
             using (SqlConnection conn = Connection)
@@ -89,6 +127,7 @@ namespace TabloidMVC.Repositories
                 }
             }
         }
+
         public void UpdateTag(Tag tag)
         {
             using (SqlConnection conn = Connection)

@@ -19,7 +19,7 @@ namespace TabloidMVC.Repositories
                 conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"Select up.DisplayName as AuthorName, c.Subject, c.Content,
+                    cmd.CommandText = @"Select c.PostId, c.Id, up.DisplayName as AuthorName, c.Subject, c.Content,
                     c.CreateDateTime as Date, p.Title as Title  
                     from Comment c
                     left Join Post p on c.PostId = p.Id
@@ -34,9 +34,9 @@ namespace TabloidMVC.Repositories
                     {
                         Comments comment = new Comments()
                         {
-                            //Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                            //PostId = reader.GetInt32(reader.GetOrdinal("PostId")),
-                            
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            PostId = reader.GetInt32(reader.GetOrdinal("PostId")),
+
                             Subject = reader.GetString(reader.GetOrdinal("Subject")),
                             Content = reader.GetString(reader.GetOrdinal("Content")),
                             CreateDateTime = reader.GetDateTime(reader.GetOrdinal("Date")),
@@ -51,20 +51,119 @@ namespace TabloidMVC.Repositories
                         
                     reader.Close();
                     return comments;
+                }   
+            }
+        }
+
+        public void DeleteComment(int id)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                            DELETE FROM Comment
+                            WHERE Id = @id
+                        ";
+
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    cmd.ExecuteNonQuery();
                 }
             }
         }
+        public void AddComment(Comments comment)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"INSERT INTO Comment (PostId, Subject, Content, CreateDateTime, UserProfileId) OUTPUT INSERTED.ID VALUES (@PostId, @Subject, @Content, @CreateDateTime, @UserProfileId)";
+                    cmd.Parameters.AddWithValue("@PostId", comment.PostId);
+                    cmd.Parameters.AddWithValue("@Subject", comment.Subject);
+                    cmd.Parameters.AddWithValue("@Content", comment.Content);
+                    cmd.Parameters.AddWithValue("@CreateDateTime", comment.CreateDateTime);
+                    cmd.Parameters.AddWithValue("@UserProfileId", comment.UserProfileId);
+
+                    comment.Id = (int)cmd.ExecuteScalar();
+                }
+            }
+        }
+
+        public void UpdateComment(Comments comment)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                            UPDATE Comment
+                            SET
+                                    
+                                Subject = @Subject,
+                                Content = @Content
+                            WHERE Id = @id";
+
+                    cmd.Parameters.AddWithValue("@Id", comment.Id);
+                    cmd.Parameters.AddWithValue("@Subject", comment.Subject);
+                    cmd.Parameters.AddWithValue("@Content", comment.Content);
+                    
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public Comments GetCommentById(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"Select c.Id, c.PostId, up.DisplayName as AuthorName, c.Subject, c.Content,
+                    c.CreateDateTime as Date, p.Title as Title  
+                    from Comment c
+                    left Join Post p on c.PostId = p.Id
+                    left join UserProfile up on c.UserProfileId = up.Id
+                    where c.id = @id
+                    order by c.CreateDateTime desc;";
+
+                    cmd.Parameters.AddWithValue("@id", id);
+                    
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        Comments comment = new Comments()
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            PostId = reader.GetInt32(reader.GetOrdinal("PostId")),
+
+                            Subject = reader.GetString(reader.GetOrdinal("Subject")),
+                            Content = reader.GetString(reader.GetOrdinal("Content")),
+                            CreateDateTime = reader.GetDateTime(reader.GetOrdinal("Date")),
+                            UserProfile = new UserProfile
+                            {
+                                DisplayName = reader.GetString(reader.GetOrdinal("AuthorName"))
+                            }
+                        };
+                    reader.Close();
+                    return comment;
+                    }
+                    reader.Close();
+                    return null;
+
+                }
+            }
+        }
+
     }
 
-    //public void Add(Comments comment)
-    //{
-    //    using (var conn = Connection)
-    //    {
-    //        conn.Open();
-    //        using (var cmd = conn.CreateCommand())
-    //        {
-    //            cmd.CommandText = @"INSERT INTO Comment ("
-    //        }
-    //    }
-    //}
 }

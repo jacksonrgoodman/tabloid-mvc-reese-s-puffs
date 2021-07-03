@@ -158,8 +158,10 @@ namespace TabloidMVC.Repositories
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
+                            DELETE FROM PostTag
+                            Where TagId = @id;
                             DELETE FROM Tag
-                            WHERE Id = @id
+                            WHERE Id = @id;   
                         ";
 
                     cmd.Parameters.AddWithValue("@id", tagId);
